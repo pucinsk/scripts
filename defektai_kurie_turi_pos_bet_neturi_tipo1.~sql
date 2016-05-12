@@ -1,0 +1,15 @@
+--defektus turincius bent viena pozija, bet neturi tipo
+with having_pos as
+ (select ddp.defects_id as positions
+    from defects_defect_positions ddp, defects df
+   where ddp.defects_id = df.id
+  MINUS
+  select ddt.defects_id
+    from defects_defect_types ddt, defects df
+   where ddt.defects_id = df.id)
+SELECT DISTINCT df.name as DEFEKTAS
+  FROM defects_defect_positions ddp,
+       defects df,
+       having_pos
+ WHERE df.id IN (having_pos.positions)
+   AND df.id = ddp.defects_id;

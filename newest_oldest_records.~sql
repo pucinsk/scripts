@@ -1,0 +1,28 @@
+WITH newest AS (
+     SELECT * FROM (
+       SELECT defects_id
+--,     'Newest' as age
+--,      MAX(created_at) OVER (PARTITION BY defects_id) as create_date
+       FROM defects_defect_types
+       ORDER BY created_at DESC
+       )
+     WHERE ROWNUM <= 1      
+),
+oldest AS (
+     SELECT * FROM (
+       SELECT defects_id
+--,     'Oldest' as age
+--,      MIN(created_at) OVER (PARTITION BY defects_id) as create_date
+       FROM defects_defect_types
+       ORDER BY created_at ASC
+       )
+     WHERE ROWNUM <= 1
+)
+SELECT df.name AS Defektas
+       , dt.name AS Tipas
+       , to_char(to_date(ddt.created_at, 'YYYY.MM.DD')) AS "Created at"
+FROM newest, oldest, defects df, defect_types dt, defects_defect_types ddt
+WHERE df.id IN (newest.defects_id, oldest.defects_id) 
+AND df.id=ddt.defects_id
+AND ddt.defect_types_id=dt.id
+ORDER BY 3 DESC

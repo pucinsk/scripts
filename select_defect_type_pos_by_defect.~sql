@@ -1,0 +1,7 @@
+SELECT df.name AS Defektas,
+       dt.name AS Defekto_tipas,
+       dp.name AS Defekto_vieta
+  FROM defects df, defect_types dt, defect_positions dp
+ WHERE LOWER(df.name) LIKE LOWER('V%')
+   AND df.id = dt.defects_id
+   AND df.id = dp.defects_id;
