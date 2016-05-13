@@ -6,3 +6,5 @@ FROM   defect_positions dp
 WHERE  tmp_dp.id = dp.id
 START  WITH dp.defect_position_parent = 0
 CONNECT BY PRIOR dp.id = dp.defect_position_parent;
+
+
